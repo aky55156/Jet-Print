@@ -1,0 +1,847 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JET PRINT</title>
+<!-- Define updated SCRIPT_URL globally -->
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxDHib5yEg1J8IvTeAX2YVCxiGu4yhp_mpwOtTR77JOtU0aLmE_lK02YO20BodCcQgj/exec";
+</script>
+<style>
+:root {    --bg-color: #f5f5f7;    --card-bg: #ffffff;    --text-color: #111111;    --text-muted: #555555;    --border-color: #e0e0e0;    --header-bg: #ffffff;    --sidebar-btn-bg: #f8f8f8;    --sidebar-btn-color: #333333;    --sidebar-btn-hover: #eeeeee;    --active-tab-bg: #e50914;    --active-tab-color: #ffffff;    --upload-bg: #fafafa;    --upload-border: #e50914;    --upload-text: #111111;    --upload-subtext: #666666;    --file-info-bg: #f0f0f2;    --file-info-border: #dcdcdc;    --clock-bg: #111111;    --clock-text: #ffffff;    --portal-title-color: #15803d;}
+[data-theme="dark"] {    --bg-color: #141414;    --card-bg: #1f1f1f;    --text-color: #ffffff;    --text-muted: #b3b3b3;    --border-color: #333333;    --header-bg: #181818;    --sidebar-btn-bg: #222222;    --sidebar-btn-color: #e50914;    --sidebar-btn-hover: #2a2a2a;    --active-tab-bg: #e50914;    --active-tab-color: #ffffff;    --upload-bg: #262626;    --upload-border: #e50914;    --upload-text: #ffffff;    --upload-subtext: #b3b3b3;    --file-info-bg: #2a2a2a;    --file-info-border: #333333;    --clock-bg: #000000;    --clock-text: #ffffff;    --portal-title-color: #22c55e;}
+* {
+    box-sizing: border-box;    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;}
+body {    margin: 0;    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;    background: var(--bg-color);    color: var(--text-color);    min-height: 100vh;    display: flex;    flex-direction: column;}
+/* TOP HEADER BAR */.top-header {    background: var(--header-bg);    border-bottom: 1px solid var(--border-color);    padding: 12px 25px;    display: flex;    justify-content: space-between;    align-items: center;    box-shadow: 0 2px 8px rgba(0,0,0,0.06);}
+.header-left {    display: flex;    align-items: center;    gap: 20px;}
+.cloud-brand-box {    display: flex;    align-items: center;    gap: 10px;}
+.cloud-icon-img {    width: 36px;    height: 36px;    object-fit: contain;}
+.datetime-box {    display: flex;    flex-direction: column;    align-items: flex-start;    gap: 4px;}
+.date-value {    font-size: 13px;    color: var(--text-muted);    font-weight: 600;}
+/* DOUBLE-SIZE FLIP-STYLE REALTIME CLOCK */.flip-clock {    display: flex;    gap: 4px;    align-items: center;}
+.flip-unit {    background: var(--clock-bg);    color: var(--clock-text);    font-family: monospace;    font-size: 20px;    font-weight: 800;    padding: 4px 8px;    border-radius: 6px;    box-shadow: 0 2px 4px rgba(0,0,0,0.15);    border: 1px solid var(--border-color);}
+.flip-colon {    color: var(--text-muted);    font-weight: bold;    font-size: 20px;}
+.header-right {    display: flex;    align-items: center;    gap: 15px;}
+.controls-group {    display: flex;    gap: 8px;    align-items: center;}
+.control-btn {    background: var(--sidebar-btn-bg);    color: var(--sidebar-btn-color);    border: 1px solid var(--border-color);    padding: 8px 14px;    border-radius: 8px;    font-size: 13px;    font-weight: 600;    cursor: pointer;}
+.control-btn:hover {    background: var(--sidebar-btn-hover);}
+.signout-btn {    background: #e50914;    color: #ffffff;    border: none;    display: none;    font-weight: 700;}
+.signout-btn:hover {    background: #b20710;}
+.container {    width: 100%;    max-width: 900px;    margin: 20px auto;    padding: 0 15px;    display: flex;    gap: 20px;    flex-grow: 1;}
+.sidebar {    width: 220px;    flex-shrink: 0;    display: flex;    flex-direction: column;    gap: 10px;}
+.tab-btn {    width: 100%;    padding: 14px 18px;    border: 1px solid var(--border-color);    border-radius: 12px;    background: var(--sidebar-btn-bg);    color: var(--text-color);    font-size: 14px;    font-weight: 600;    text-align: left;    cursor: pointer;    box-shadow: 0 2px 4px rgba(0,0,0,0.03);}
+.tab-btn:hover {    background: var(--sidebar-btn-hover);}
+.tab-btn.active {    background: var(--active-tab-bg);    color: var(--active-tab-color);    border-color: var(--active-tab-bg);    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);}
+.content-area {    flex-grow: 1;}
+.card {    background: var(--card-bg);    border: 1px solid var(--border-color);    border-radius: 16px;    padding: 25px;    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);    display: none;}
+.card.active {    display: block;}
+.header {    text-align: center;    margin-bottom: 20px;}
+.header-icon {    font-size: 40px;    margin-bottom: 8px;}
+h1 {    margin: 0;    font-size: 24px;    font-weight: 700;    color: var(--portal-title-color);    letter-spacing: 0.5px;}
+.subtitle {    margin-top: 5px;    color: var(--text-muted);    font-size: 13px;}
+.instructions {    background: var(--file-info-bg);    border: 1px solid var(--border-color);    border-left: 4px solid var(--active-tab-bg);    border-radius: 10px;    padding: 15px;    color: var(--text-color);    font-size: 13px;    line-height: 1.6;}
+.instructions ol {    margin: 8px 0 0 0;    padding-left: 18px;}
+
+/* DOWNLOAD FORMS LIST STYLING */
+.form-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+.form-item-card {
+    background: var(--file-info-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.form-item-info {
+    flex: 1;
+    min-width: 200px;
+}
+.form-item-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+.form-item-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.form-item-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.btn-download {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.btn-download:hover { background: #1d4ed8; }
+.btn-jetprint {
+    background: #15803d;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.btn-jetprint:hover { background: #166534; }
+.btn-jetprint:disabled { background: #9ca3af; cursor: not-allowed; }
+
+/* LOG TABLE STYLING */.log-table-wrapper {    overflow-x: auto;    margin-top: 15px;    border: 1px solid var(--border-color);    border-radius: 10px;}
+.log-table {    width: 100%;    border-collapse: collapse;    font-size: 13px;    text-align: left;}
+.log-table th, .log-table td {    padding: 10px 12px;    border-bottom: 1px solid var(--border-color);}
+.log-table th {    background: var(--file-info-bg);    color: var(--text-color);    font-weight: 700;}
+.log-table tr:hover {    background: var(--sidebar-btn-hover);}
+/* LOGIN OVERLAY MODAL */#loginModal {    position: fixed;    top: 0; left: 0; width: 100%; height: 100%;    background: var(--bg-color);    display: flex;    justify-content: center;    align-items: center;    z-index: 9999;    padding: 20px;    overflow-y: auto;}
+.login-card {    background: var(--card-bg);    width: 100%;    max-width: 480px;    padding: 30px;    border-radius: 16px;    box-shadow: 0 15px 35px rgba(0,0,0,0.25);    border: 1px solid var(--border-color);
+    position: relative;    margin: auto;}
+.welcome-banner {    background: var(--file-info-bg);    border: 1px solid var(--border-color);    border-left: 4px solid #15803d;    padding: 14px;    border-radius: 8px;    font-size: 13px;    color: var(--text-color);    margin-bottom: 18px;    line-height: 1.6;}
+.welcome-banner strong {
+    color: #15803d;
+    font-weight: 700;
+}
+.form-group {    margin-bottom: 15px;}
+.form-label {    display: block;    margin-bottom: 6px;    font-size: 13px;    font-weight: 600;    color: var(--text-color);}
+.form-select, .form-input {    width: 100%;    padding: 12px;    border: 1px solid var(--border-color);    border-radius: 8px;    background: var(--upload-bg);    color: var(--text-color);    font-size: 14px;}
+.form-select option {    background: var(--card-bg);    color: var(--text-color);}
+.login-error {    color: #e50914;    font-size: 13px;    margin-bottom: 10px;    text-align: center;    display: none;}
+.forgot-pass-link {    display: block;    margin-top: 8px;    font-size: 12px;    color: #3b82f6;    text-align: right;    cursor: pointer;    text-decoration: underline;}
+.user-badge {    background: var(--file-info-bg);    border: 1px solid var(--border-color);    padding: 10px 14px;    border-radius: 10px;    margin-bottom: 20px;    display: flex;    justify-content: space-between;    align-items: center;    font-size: 13px;}
+.logout-link {    color: #e50914;    cursor: pointer;    font-weight: 600;    text-decoration: underline;}
+/* UPLOAD AREA */.upload-area {    display: block;    border: 2px dashed var(--upload-border);    background: var(--upload-bg);    border-radius: 12px;    padding: 30px 15px;    text-align: center;    cursor: pointer;}
+#fileInput {    display: none;}
+.upload-icon {    font-size: 44px;    margin-bottom: 8px;}
+.upload-text {    font-size: 16px;    font-weight: 600;    color: var(--upload-text);}
+.upload-subtext {    margin-top: 5px;    font-size: 12px;    color: var(--upload-subtext);}
+.file-info {    display: none;    margin-top: 15px;    padding: 12px 14px;    background: var(--file-info-bg);    border: 1px solid var(--file-info-border);    border-radius: 10px;}
+.file-name {    font-weight: 600;    color: var(--text-color);    word-break: break-word;    font-size: 14px;}
+.file-size {    margin-top: 3px;    font-size: 12px;    color: var(--text-muted);}
+button.action-btn {    width: 100%;    margin-top: 18px;    padding: 14px;    border: none;    border-radius: 10px;    background: #e50914;    color: #ffffff;    font-size: 15px;    font-weight: 600;    cursor: pointer;    box-shadow: 0 4px 10px rgba(229, 9, 20, 0.3);}
+button.action-btn:hover {    background: #b20710;}
+button.action-btn:disabled {    background: #e0e0e0;    color: #999999;    box-shadow: none;    cursor: not-allowed;}
+[data-theme="dark"] button.action-btn:disabled {    background: #333333;    color: #777777;}
+/* ANOTHER FILE BUTTON */#resetButton {    display: none;    width: 100%;    margin-top: 12px;    padding: 14px;    border: 1px solid var(--border-color);    border-radius: 10px;    background: var(--sidebar-btn-bg);    color: var(--text-color);    font-size: 15px;    font-weight: 600;    cursor: pointer;    box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+#resetButton:hover {    background: var(--sidebar-btn-hover);}
+.progress-container {    display: none;    margin-top: 18px;}
+.progress-bar {    width: 100%;    height: 8px;    background: var(--border-color);    border-radius: 10px;    overflow: hidden;}
+.progress {    width: 0%;    height: 100%;    background: #e50914;    transition: width 0.4s ease;}
+.progress-text {    text-align: center;    margin-top: 6px;    font-size: 13px;    font-weight: 600;    color: var(--text-color);}
+.message {    display: none;    margin-top: 18px;    padding: 14px;    border-radius: 10px;    text-align: center;    font-size: 13px;    font-weight: 600;    line-height: 1.5;}
+.success {    background: #f0fdf4;    color: #16a34a;    border: 1px solid #bbf7d0;}
+[data-theme="dark"] .success {    background: rgba(34, 197, 94, 0.15);    color: #4ade80;    border: 1px solid rgba(34, 197, 94, 0.3);}
+.error {    background: #fef2f2;    color: #dc2626;    border: 1px solid #fecaca;}
+[data-theme="dark"] .error {    background: rgba(239, 68, 68, 0.15);    color: #f87171;    border: 1px solid rgba(239, 68, 68, 0.3);}
+/* DEVELOPER PROFILE PHOTO STYLING */.developer-profile {    display: flex;    align-items: center;    gap: 15px;    margin-bottom: 15px;    padding-bottom: 15px;    border-bottom: 1px solid var(--border-color);}
+.developer-avatar {    width: 70px;    height: 70px;    border-radius: 50%;    object-fit: cover;    border: 2px solid #e50914;    box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
+.developer-info h4 {    margin: 0 0 4px 0;    font-size: 16px;    color: var(--text-color);}
+.developer-info p {    margin: 0;    font-size: 13px;    color: var(--text-muted);}
+.contact-card-inner {    background: var(--file-info-bg);    border: 1px solid var(--border-color);    border-radius: 12px;    padding: 16px;    margin-bottom: 16px;}
+.contact-item {    margin-bottom: 10px;    font-size: 14px;    color: var(--text-color);}
+/* EMBEDDED GOOGLE FORM WRAPPER (BORDERLESS & SCROLL-FREE FIT) */
+.form-embed-wrapper {    width: 100%;    background: transparent;    border: none;    border-radius: 0;    padding: 0;    overflow: hidden;}
+.form-embed-wrapper iframe {    width: 100%;    height: 950px;    border: none;    background: transparent;}
+/* MOBILE RESPONSIVE ADAPTATIONS */@media (max-width: 768px) {    .top-header {        padding: 10px 12px;        flex-direction: column;        gap: 12px;    }    .header-left, .header-right {        width: 100%;        justify-content: center;        align-items: center;    }    .flip-unit {        font-size: 16px;        padding: 3px 6px;    }    .container {        flex-direction: column;        margin: 10px auto;        padding: 0 10px;        gap: 12px;    }    .sidebar {        width: 100%;        flex-direction: row;        gap: 6px;        flex-wrap: wrap;    }    .tab-btn {        text-align: center;        padding: 10px 8px;        font-size: 12px;        border-radius: 8px;        flex: 1;    }    .card {        padding: 18px;    }}
+</style>
+</head>
+<body>
+
+<!-- STAFF LOGIN MODAL -->
+<div id="loginModal">    
+    <div class="login-card">        
+        <div class="header" style="margin-bottom: 15px;">            
+            <div class="header-icon" style="font-size: 36px;">🖨️</div>            
+            <h1 style="font-size: 22px; color: #e50914;">JET PRINT</h1>            
+            <div class="subtitle"><em>Cloud-Based Printer</em></div>        
+        </div>
+        
+        <div class="welcome-banner">
+            <strong style="color: #15803d; font-weight: 700;">About JET PRINT</strong><br><br>
+            <p style="margin: 4px 0 0 0; line-height: 1.5;">
+                This cloud-based portal allows staff to securely print documents & download official forms over the internet.
+            </p>
+        </div>
+
+        <div class="login-error" id="loginError"></div>        
+        
+        <div id="loginFormSection">
+            <div class="form-group">            
+                <label class="form-label">Select Your Name</label>            
+                <select id="staffSelect" class="form-select">                
+                    <option value="">-- Choose Staff Member --</option>            
+                </select>        
+            </div>        
+            <div class="form-group">            
+                <label class="form-label">4-Digit PIN</label>            
+                <input type="password" id="staffPassword" class="form-input" maxlength="4" inputmode="numeric" pattern="[0-9]*" placeholder="Enter 4-digit PIN">        
+                <span class="forgot-pass-link" onclick="handleForgotPassword()">Forgot 4-digit PIN?</span>
+            </div>        
+            <button class="action-btn" onclick="handleLogin()" style="margin-top: 5px;">🔑 Login & Proceed</button>    
+        </div>
+    </div>
+</div>
+
+<!-- TOP HEADER BAR -->
+<div class="top-header">    
+    <div class="header-left">
+        <div class="cloud-brand-box">            
+            <img src="https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcR4Kr3Agnq0lQe0GYuoUCaKZoNGxkLW5ttFCWSLhIPw4d2A81V6L7V9IbAaww4B4If9ee10_6uqZCScUmk" alt="JET PRINT" class="cloud-icon-img">        
+        </div>        
+        <div class="datetime-box">            
+            <div class="date-value" id="date">Loading...</div>            
+            <div class="flip-clock" id="flipClock">                
+                <span class="flip-unit" id="hours">00</span>                
+                <span class="flip-colon">:</span>                
+                <span class="flip-unit" id="minutes">00</span>                
+                <span class="flip-colon">:</span>                
+                <span class="flip-unit" id="seconds">00</span>                
+                <span class="flip-unit" id="ampm" style="background:#e50914; margin-left:3px; font-size:14px; color:#fff;">AM</span>            
+            </div>        
+        </div>    
+    </div>    
+    <div class="header-right">        
+        <div class="controls-group">            
+            <button class="control-btn" id="themeToggle" onclick="toggleTheme()">🌙 Dark</button>            
+            <button class="control-btn signout-btn" id="headerSignOutBtn" onclick="handleLogout()">Sign Out</button>        
+        </div>    
+    </div>
+</div>
+
+<div class="container">
+    <!-- LEFT SIDEBAR TABS -->    
+    <div class="sidebar">        
+        <button class="tab-btn active" onclick="switchTab('printTab', this)">🖨️ Print</button>        
+        <button class="tab-btn" onclick="switchTab('downloadFormsTab', this); renderOfficialFormsList();">📥 Download Forms</button>
+        <button class="tab-btn" onclick="switchTab('instructionsTab', this)">📌 Instructions</button>        
+        <button class="tab-btn" onclick="switchTab('contactTab', this)">📞 Contact Us</button>        
+        <button class="tab-btn" id="logTabBtn" onclick="switchTab('logTab', this); fetchLogData();" style="display: none;">📊 Log Sheet</button>
+    </div>
+    
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+        <!-- 1. PRINT PANE -->
+        <div class="card active" id="printTab">
+            <div class="header">
+                <div class="header-icon">☁️🖨️</div>
+                <h1>JET PRINT</h1>
+                <div class="subtitle">Upload your document or image for cloud network printing</div>
+            </div>
+            <div class="user-badge">
+                <div>👤 <span id="displayUserName">Staff</span> (<span id="displayUserDesig">Designation</span>)</div>
+                <div class="logout-link" onclick="handleLogout()">Switch User</div>
+            </div>
+            <div id="uploadWrapper">
+                <label for="fileInput" class="upload-area">
+                    <div class="upload-icon">☁️ 📤</div>
+                    <div class="upload-text">Click to select Document / Image file</div>
+                    <div class="upload-subtext">Supported: PDF, Doc, Docx, Text, JPEG, JPG, PNG</div>
+                    <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.jpeg,.jpg,.png">
+                </label>
+                <div class="file-info" id="fileInfo">
+                    <div class="file-name" id="fileName"></div>
+                    <div class="file-size" id="fileSize"></div>
+                </div>
+                <button id="uploadButton" class="action-btn" disabled>
+                    📤 Send to Cloud Printer
+                </button>
+            </div>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+            <div class="message" id="message"></div>
+            <button id="resetButton" onclick="resetUploadForm()">
+                📁 Upload Another File
+            </button>
+        </div>
+
+        <!-- DOWNLOAD FORMS PANE -->
+        <div class="card" id="downloadFormsTab">
+            <div class="header">
+                <div class="header-icon">📑</div>
+                <h1>Official Application Forms</h1>
+                <div class="subtitle">View & download official forms or send them directly to JET PRINT</div>
+            </div>
+            <div class="instructions" style="margin-bottom: 15px;">
+                <span>Select any official form below to either <strong>View / Download</strong> or click <strong>Send to Jet Print</strong> to route it straight to Amit's printer.</span>
+            </div>
+            <div class="form-list-container" id="officialFormsListContainer">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+
+        <!-- 2. INSTRUCTIONS PANE -->        
+        <div class="card" id="instructionsTab">
+            <div class="header">
+                <div class="header-icon">📌</div>
+                <h1>Instructions</h1>
+                <div class="subtitle">Guidelines for printing your documents</div>
+            </div>
+            <div class="instructions">
+                <strong>Important Instructions</strong>
+                <ol style="margin-top: 10px;">
+                    <li style="margin-bottom: 10px;">
+                        Upload your file using the Print tab or Download Forms tab, and collect your documents from <strong>Amit's PC-connected printer.</strong>
+                    </li>
+                    <li>
+                        If your document has more than one page, please go to the printer and flip the pages manually, as the printer does not support duplex printing.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- 3. CONTACT US PANE -->        
+        <div class="card" id="contactTab">
+            <div class="header">
+                <div class="header-icon">📞</div>
+                <h1>Contact Us</h1>
+            </div>
+
+            <div class="developer-profile" style="flex-direction: column; text-align: center; gap: 10px; border-bottom: none; margin-bottom: 8px; padding-bottom: 0;">
+                <img src="https://i.ibb.co/j7tZS0V/Screenshot-20261021-123525-Photos.jpg" id="devPhoto" alt="Amit Yadav" class="developer-avatar" style="width: 120px; height: 120px;">
+                <div class="developer-info">
+                    <h4 style="font-size: 21px; letter-spacing: 1px;">AMIT YADAV</h4>
+                    <p style="font-size: 14px; margin-top: 5px;">DEVELOPER</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3 style="font-size: 16px; margin-bottom: 10px; color: var(--portal-title-color); text-align: center;">Feedback Form</h3>
+                <div class="form-embed-wrapper">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScXjUR5CRE1xR_TMgGRzlqpyq1Jyx3XqmGOP30BgmYGTzTLRA/viewform?embedded=true" scrolling="no" title="Feedback Form">Loading…</iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SECURE LOG SHEET PANE -->
+        <div class="card" id="logTab">
+            <div class="header">
+                <div class="header-icon">📊</div>
+                <h1>Admin Activity & Print Log Sheet</h1>
+                <div class="subtitle">Secure records of staff logins and printed documents</div>
+            </div>
+            <div class="instructions" style="margin-bottom: 15px;">
+                <span>This log sheet tracks every staff login session, printed file names, and timestamps. Restricted to Amit Kumar Yadav.</span>
+            </div>
+            <button class="control-btn" onclick="fetchLogData()" style="margin-bottom: 15px;">🔄 Refresh Logs</button>
+            <div class="log-table-wrapper">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Staff Name</th>
+                            <th>Designation</th>
+                            <th>Action / File Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logTableBody">
+                        <tr><td colspan="4" style="text-align: center;">Loading logs...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const staffDatabase = [    
+    {name: "Dr. Lata Kapoor", hindiName: "डॉ. लता कपूर", desig: "Additional Director"}, 
+    {name: "Dr. Bibhash Nandi", hindiName: "डॉ. बिभाष नंदी", desig: "Joint Director"}, 
+    {name: "Dr. Stuti Kaushik", hindiName: "डॉ. स्तुति कौशिक", desig: "Assistant Director"}, 
+    {name: "Dr. Anuja Gupta", hindiName: "डॉ. अनुजा गुप्ता", desig: "Assistant Director"}, 
+    {name: "Mr. Udaiveer Singh", hindiName: "श्री उदयवीर सिंह", desig: "Assistant Research Officer"}, 
+    {name: "Mr. Manoranjan Mishra", hindiName: "श्री मनोरंजन मिश्रा", desig: "Assistant Research Officer"}, 
+    {name: "Dr. Swati Chauhan", hindiName: "डॉ. स्वाति चौहान", desig: "Assistant Research Officer"}, 
+    {name: "Dr. Madhusudan Chaturvedi", hindiName: "डॉ. मधुसूदन चतुर्वेदी", desig: "Research Assistant"}, 
+    {name: "Mr. Vikram Jeet Yadav", hindiName: "श्री विक्रम जीत यादव", desig: "Research Assistant"}, 
+    {name: "Mr. Sachin Khandelwal", hindiName: "श्री सचिन खंडेलवाल", desig: "Research Assistant"}, 
+    {name: "Mr. Shashi Kant Sharma", hindiName: "श्री शशि कांत शर्मा", desig: "Technician"}, 
+    {name: "Ms. Mamta Rav", hindiName: "सुश्री ममता राव", desig: "Technician"}, 
+    {name: "Ms. Priyanka", hindiName: "सुश्री प्रियंका", desig: "Technician"}, 
+    {name: "Mr. Pramod Kumar Shrewas", hindiName: "श्री प्रमोद कुमार श्रेवास", desig: "Technician"}, 
+    {name: "Mr. Yogander Prasad", hindiName: "श्री योगेंदर प्रसाद", desig: "Technician"}, 
+    {name: "Mr. Ankit", hindiName: "श्री अंकित", desig: "Technician"}, 
+    {name: "Mr. Munish Sharma", hindiName: "श्री मुनीश शर्मा", desig: "Insect Collector"}, 
+    {name: "Mr. Aakash Tripathi", hindiName: "श्री आकाश त्रिपाठी", desig: "Laboratory Attendant"}, 
+    {name: "Mr. Shiv Kumar", hindiName: "श्री शिव कुमार", desig: "Animal Attendant"}, 
+    {name: "Mr. Surender Singh", hindiName: "श्री सुरेंद्र सिंह", desig: "Laboratory Attendant"}, 
+    {name: "Mr. Kishan Lal", hindiName: "श्री किशन लाल", desig: "Insect Collector"}, 
+    {name: "Dr. Warisha Mariam", hindiName: "डॉ. वारिशा मरियम", desig: "Public Health Specialist"}, 
+    {name: "Dr. Dhirender Kumar", hindiName: "डॉ. धीरेंद्र कुमार", desig: "Microbiologist"}, 
+    {name: "Dr. Shyama Datt", hindiName: "डॉ. श्यामा दत्त", desig: "Microbiologist"}, 
+    {name: "Dr. Swati Pattnaik", hindiName: "डॉ. स्वाति पटनायक", desig: "Microbiologist"}, 
+    {name: "Dr. Rashi Raizada", hindiName: "डॉ. राशि रायजादा", desig: "Technical Officer"}, 
+    {name: "Mr. Tapender", hindiName: "श्री तपेन्द्र", desig: "Research Assistant"}, 
+    {name: "Mr. Mohd. Jishan", hindiName: "श्री मो. जीशान", desig: "Research Assistant"}, 
+    {name: "Dr. Balvindra Singh", hindiName: "डॉ. बलविन्द्र सिंह", desig: "Food Microbiologist"}, 
+    {name: "Mr. Ravendra Kumar Kesarwani", hindiName: "श्री रवींद्र कुमार केसरवानी", desig: "Research Assistant"}, 
+    {name: "Ms. Aashi Chauhan", hindiName: "सुश्री आशि चौहान", desig: "Technical Assistant"}, 
+    {name: "Ms. Ranjana Yadav", hindiName: "सुश्री रंजना यादव", desig: "Technical Assistant"}, 
+    {name: "Mr. Amit kumar Yadav", hindiName: "श्री अमित कुमार यादव", desig: "Multipurpose Assistant"}, 
+    {name: "Mr. Mohd Faizan", hindiName: "श्री मो. फैजान", desig: "Multipurpose Assistant"}, 
+    {name: "Dr. Shalu Kathuria", hindiName: "डॉ. शालू कथूरिया", desig: "PH Technical Officer"}, 
+    {name: "Harsh", hindiName: "हर्ष", desig: "Lab Attendant"}, 
+    {name: "Alka", hindiName: "अलका", desig: "Lab Attendant"}, 
+    {name: "Khushi Goel", hindiName: "खुशी गोयल", desig: "Intern- CBDDR"}
+];
+
+/* OFFICIAL FORMS DATABASE EXTRACTED FROM EXCEL */
+const officialFormsList = [
+    { title: "Car Indent Form", url: "https://drive.google.com/open?id=1Z3vcaeV01SB9Gye7K-g8gBinEa6KMvMk&usp=drive_fs" },
+    { title: "Casual Leave Form", url: "https://drive.google.com/open?id=1gQRbqwFnsgMdrnyvU_eafdjooGelz2BC&usp=drive_fs" },
+    { title: "Child Care Leave", url: "https://drive.google.com/open?id=1ymxIruWzIbhP7n3LNJwonV6hXjK5yYmK&usp=drive_fs" },
+    { title: "Departure Form", url: "https://drive.google.com/open?id=1o4qiBuuW88ARkzR-Gt_BlzxbU-HVUpY9&usp=drive_fs" },
+    { title: "Earned Leave Form (Except HoD)", url: "https://drive.google.com/open?id=1k_H2-Xw3Osj5RU9uWZ5M2JgtVikWOp-Z&usp=drive_fs" },
+    { title: "Earned Leave Form (For HoD)", url: "https://drive.google.com/open?id=1NT9Rd6Zav0v9Syf6x_tt9aLG5GKyCzv5&usp=drive_fs" },
+    { title: "For Applying Passport", url: "https://drive.google.com/open?id=10Z-FLKxuIkTc7a3vsYqcv1TPR3lg30b_" },
+    { title: "Joining Form", url: "https://drive.google.com/open?id=14Xl1x7ou1su-gTgvs82AVMEZbwKhf9Wr" },
+    { title: "Permission to go out of India", url: "https://drive.google.com/open?id=1VsauP7U5ycgq9yGnJWzZl16_ZfOIyEvr" },
+    { title: "Leave Application form (PM-ABHIM Staff)", url: "https://drive.google.com/file/d/13pO0MIKiVt2S-wmoEQeISWVJKW8AY_C9/view" },
+    { title: "EOffice Registration Form", url: "https://drive.google.com/open?id=183eUvV7swAGCzXI9frlvmnIdG3YR_2q3&usp=drive_fs" },
+    { title: "Vehicle Sticker Form", url: "https://drive.google.com/file/d/1K5TdpqGBZsYnvTNM8yJo4Dsp0PcHTDLS/view?usp=sharing" }
+];
+
+let currentUser = null; 
+let inactivityTimer;
+const INACTIVITY_LIMIT = 2 * 60 * 1000;
+
+function populateStaffDropdown() {
+    const select = document.getElementById("staffSelect");
+    if (select && select.options.length <= 1) {
+        staffDatabase.forEach((staff, index) => {
+            const opt = document.createElement("option");
+            opt.value = index;
+            opt.textContent = `${index + 1}. ${staff.name} (${staff.desig})`;
+            select.appendChild(opt);
+        });
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    populateStaffDropdown();
+    const savedUser = localStorage.getItem("jetPrintUser");
+    const lastActivity = localStorage.getItem("lastActivityTime");
+    
+    if (savedUser && lastActivity) {
+        const elapsed = Date.now() - parseInt(lastActivity, 10);
+        if (elapsed < INACTIVITY_LIMIT) {
+            currentUser = JSON.parse(savedUser);
+            applyUserSessionUI(currentUser);
+            resetInactivityTimer();
+        } else {
+            localStorage.removeItem("jetPrintUser");
+            localStorage.removeItem("lastActivityTime");
+        }
+    }
+});
+window.addEventListener("load", populateStaffDropdown);
+
+function resetInactivityTimer() {
+    if (!currentUser) return;
+    localStorage.setItem("lastActivityTime", Date.now());
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+        handleLogoutDueToInactivity();
+    }, INACTIVITY_LIMIT);
+}
+
+function handleLogoutDueToInactivity() {
+    alert("Session expired due to 2 minutes of inactivity. Please log in again.");
+    handleLogout();
+}
+
+['click', 'touchstart', 'mousemove', 'keypress', 'scroll'].forEach(eventType => {
+    window.addEventListener(eventType, resetInactivityTimer, { passive: true });
+});
+
+function applyUserSessionUI(user) {
+    document.getElementById("displayUserName").textContent = user.name;
+    document.getElementById("displayUserDesig").textContent = user.desig;
+    document.getElementById("loginModal").style.display = "none";
+    document.getElementById("headerSignOutBtn").style.display = "inline-block";
+
+    const logTabBtn = document.getElementById("logTabBtn");
+    if (user.name && user.name.toLowerCase().includes("amit kumar yadav")) {
+        logTabBtn.style.display = "block";
+    } else {
+        logTabBtn.style.display = "none";
+    }
+}
+
+// LOGIN VERIFICATION LOGIC
+function handleLogin() {    
+    const selectIdx = document.getElementById("staffSelect").value;    
+    const pwdInput = document.getElementById("staffPassword").value;    
+    const errorBox = document.getElementById("loginError");
+
+    if (selectIdx === "") {        
+        errorBox.textContent = "Please select your name.";        
+        errorBox.style.display = "block";        
+        return;    }
+
+    if (!pwdInput || pwdInput.length !== 4) {        
+        errorBox.textContent = "Please enter a 4-digit PIN.";        
+        errorBox.style.display = "block";        
+        return;    }
+
+    const staff = staffDatabase[selectIdx];
+    const formData = new URLSearchParams();
+    formData.append("action", "verifyLogin");
+    formData.append("staffName", staff.name);
+    formData.append("pin", pwdInput);
+
+    errorBox.textContent = "Verifying PIN...";
+    errorBox.style.display = "block";
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success || data.valid) {
+            currentUser = staff;
+            localStorage.setItem("jetPrintUser", JSON.stringify(staff));
+            localStorage.setItem("lastActivityTime", Date.now());
+            applyUserSessionUI(staff);
+            errorBox.style.display = "none";
+            document.getElementById("staffPassword").value = "";
+            resetInactivityTimer();
+        } else {
+            errorBox.textContent = "Invalid PIN. Please try again.";
+            errorBox.style.display = "block";
+        }
+    })
+    .catch(() => {
+        errorBox.textContent = "Connection error. Please try again.";
+        errorBox.style.display = "block";
+    });
+}
+
+function handleForgotPassword() {
+    alert("To get your PIN, please contact Developer Amit Kumar Yadav:\nPhone: +91 7503455156\nEmail: aky55156@gmail.com");
+}
+
+function handleLogout() {    
+    currentUser = null;    
+    localStorage.removeItem("jetPrintUser");
+    localStorage.removeItem("lastActivityTime");
+    clearTimeout(inactivityTimer);
+    document.getElementById("staffSelect").value = "";    
+    document.getElementById("staffPassword").value = "";    
+    document.getElementById("loginError").style.display = "none";    
+    document.getElementById("headerSignOutBtn").style.display = "none";    
+    const logBtn = document.getElementById("logTabBtn");
+    if (logBtn) logBtn.style.display = "none";
+    document.getElementById("loginModal").style.display = "flex";
+}
+
+function toggleTheme() {    
+    const html = document.documentElement;    
+    const themeBtn = document.getElementById("themeToggle");    
+    if (html.getAttribute("data-theme") === "dark") {        
+        html.setAttribute("data-theme", "light");        
+        themeBtn.textContent = "🌙 Dark";    } else {        
+        html.setAttribute("data-theme", "dark");        
+        themeBtn.textContent = "☀️ Light";    }
+}
+
+function switchTab(tabId, btnElement) {    
+    document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));    
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));    
+    document.getElementById(tabId).classList.add('active');    
+    btnElement.classList.add('active');
+}
+
+function updateDateTime() {    
+    const now = new Date();    
+    document.getElementById("date").textContent = now.toLocaleDateString("en-IN", { weekday: "short", year: "numeric", month: "short", day: "numeric" });        
+    let hours = now.getHours();    
+    const minutes = String(now.getMinutes()).padStart(2, '0');    
+    const seconds = String(now.getSeconds()).padStart(2, '0');    
+    const ampm = hours >= 12 ? 'PM' : 'AM';        
+    hours = hours % 12;    
+    hours = hours ? hours : 12;    
+    const formattedHours = String(hours).padStart(2, '0');
+
+    document.getElementById("hours").textContent = formattedHours;    
+    document.getElementById("minutes").textContent = minutes;    
+    document.getElementById("seconds").textContent = seconds;    
+    document.getElementById("ampm").textContent = ampm;
+}
+updateDateTime();
+setInterval(updateDateTime, 1000);
+
+/* RENDER DOWNLOAD FORMS LIST WITH STABLE VIEW/DOWNLOAD LINKS */
+function renderOfficialFormsList() {
+    const container = document.getElementById("officialFormsListContainer");
+    if (!container) return;
+    
+    let html = "";
+    officialFormsList.forEach((form, index) => {
+        let viewUrl = form.url;
+        if (viewUrl.includes("uc?export=download")) {
+            viewUrl = viewUrl.replace("uc?export=download&id=", "open?id=");
+        }
+
+        html += `
+            <div class="form-item-card">
+                <div class="form-item-info">
+                    <div class="form-item-title">📄 ${form.title}</div>
+                    <div class="form-item-desc">Official NCDC Form</div>
+                </div>
+                <div class="form-item-actions">
+                    <a href="${viewUrl}" target="_blank" class="btn-download">👁️ View / Download</a>
+                    <button class="btn-jetprint" id="btnPrintForm_${index}" onclick="sendFormToJetPrint('${form.url}', '${form.title.replace(/'/g, "\\'")}', ${index})">🖨️ Send to Jet Print</button>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+/* SEND OFFICIAL FORM FROM DRIVE TO JET PRINT */
+function sendFormToJetPrint(formUrl, formTitle, btnIndex) {
+    if (!currentUser) {
+        alert("Please log in to print forms.");
+        return;
+    }
+
+    const btn = document.getElementById(`btnPrintForm_${btnIndex}`);
+    const origText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = "⏳ Sending...";
+
+    let fileId = "";
+    if (formUrl.includes("id=")) {
+        const match = formUrl.match(/id=([^&]+)/);
+        if (match) fileId = match[1];
+    } else if (formUrl.includes("/file/d/")) {
+        const match = formUrl.match(/\/file\/d\/([^\/]+)/);
+        if (match) fileId = match[1];
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("action", "printDriveForm");
+    formData.append("fileId", fileId);
+    formData.append("formTitle", formTitle);
+    formData.append("uploaderName", currentUser.name);
+    formData.append("uploaderDesig", currentUser.desig);
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = origText;
+        if (data.success) {
+            alert(`✅ "${formTitle}" successfully sent to Jet Print!\n\nUploader: ${currentUser.name}\nPlease collect your document from Amit's printer.`);
+        } else {
+            alert("❌ Error: " + (data.message || "Failed to print form."));
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        btn.disabled = false;
+        btn.innerHTML = origText;
+        alert("❌ Connection error while sending form to Jet Print.");
+    });
+}
+
+const fileInput = document.getElementById("fileInput");
+const uploadButton = document.getElementById("uploadButton");
+const resetButton = document.getElementById("resetButton");
+const uploadWrapper = document.getElementById("uploadWrapper");
+const fileInfo = document.getElementById("fileInfo");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
+const message = document.getElementById("message");
+const progressContainer = document.getElementById("progressContainer");
+const progress = document.getElementById("progress");
+const progressText = document.getElementById("progressText");
+
+let selectedFile = null;
+
+fileInput.addEventListener("change", function() {    
+    const file = this.files[0];    
+    if (!file) return;
+
+    selectedFile = file;    
+    fileName.textContent = "📎 " + file.name;    
+    fileSize.textContent = formatFileSize(file.size);    
+    fileInfo.style.display = "block";    
+    uploadButton.disabled = false;    
+    progressContainer.style.display = "none";    
+    progress.style.width = "0%";    
+    progressText.textContent = "0%";    
+    hideMessage();
+});
+
+uploadButton.addEventListener("click", function() {    
+    if (!selectedFile || !currentUser) return;
+
+    uploadWrapper.style.display = "none";    
+    progressContainer.style.display = "block";        
+
+    progress.style.width = "25%";
+    progressText.textContent = "25% - Reading file...";
+
+    setTimeout(() => {
+        progress.style.width = "50%";
+        progressText.textContent = "50% - Preparing secure cloud packet...";
+    }, 600);
+
+    setTimeout(() => {
+        progress.style.width = "75%";
+        progressText.textContent = "75% - Transmitting to cloud printer queue...";
+    }, 1200);
+
+    setTimeout(() => { progress.style.width = "80%"; progressText.textContent = "80% - Encrypting packet..."; }, 1700);
+    setTimeout(() => { progress.style.width = "85%"; progressText.textContent = "85% - Establishing secure connection..."; }, 2300);
+    setTimeout(() => { progress.style.width = "90%"; progressText.textContent = "90% - Uploading to cloud queue..."; }, 3000);
+    setTimeout(() => { progress.style.width = "95%"; progressText.textContent = "95% - Finalizing server response..."; }, 3800);
+
+    const reader = new FileReader();
+
+    reader.onload = function() {        
+        const base64 = reader.result.split(",")[1];        
+        const formData = new URLSearchParams();        
+        formData.append("action", "uploadFile");
+        formData.append("fileName", selectedFile.name);        
+        formData.append("fileData", base64);        
+        formData.append("uploaderName", currentUser.name);        
+        formData.append("uploaderDesig", currentUser.desig);
+
+        fetch(SCRIPT_URL, {            
+            method: "POST",            
+            body: formData        })        
+        .then(response => response.json())        
+        .then(data => {            
+            progress.style.width = "100%";            
+            progressText.textContent = "100% - Complete!";
+
+            setTimeout(() => {
+                if (data.success) {                
+                    const succMsg = `✅ File uploaded successfully!<br><br>Uploader: <strong>${currentUser.name}</strong> (${currentUser.desig})<br>Your document has been sent for printing.<br>Please collect your printed document from <strong>Amit's PC-connected printer.</strong>`;                
+                    showMessage(succMsg, "success");                                
+                    resetButton.style.display = "block";            
+                } else {                
+                    showMessage("❌ " + data.message, "error");                
+                    uploadWrapper.style.display = "block";                
+                    progressContainer.style.display = "none";            
+                }
+            }, 400);
+        })        
+        .catch(error => {            
+            console.error(error);            
+            const errMsg = "❌ Upload failed.<br>Please try again.";            
+            showMessage(errMsg, "error");            
+            uploadWrapper.style.display = "block";
+            progressContainer.style.display = "none";
+        });
+    };
+
+    reader.onerror = function() {
+        const errRdMsg = "❌ Could not read the file.";
+        showMessage(errRdMsg, "error");
+        uploadWrapper.style.display = "block";
+        progressContainer.style.display = "none";
+    };
+
+    reader.readAsDataURL(selectedFile);
+});
+
+function fetchLogData() {
+    if (!currentUser || !currentUser.name.toLowerCase().includes("amit kumar yadav")) return;
+
+    const tbody = document.getElementById("logTableBody");
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">Loading logs from server...</td></tr>`;
+
+    const formData = new URLSearchParams();
+    formData.append("action", "getLogs");
+    formData.append("requesterName", currentUser.name);
+
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.logs) {
+            if (data.logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No logs found yet.</td></tr>`;
+                return;
+            }
+            let html = "";
+            data.logs.forEach(log => {
+                html += `<tr>
+                    <td>${log.timestamp}</td>
+                    <td><strong>${log.staffName}</strong></td>
+                    <td>${log.desig}</td>
+                    <td>${log.actionDetails}</td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        } else {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #e50914;">${data.message || "Failed to load logs."}</td></tr>`;
+        }
+    })
+    .catch(() => {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #e50914;">Connection error while loading logs.</td></tr>`;
+    });
+}
+
+function resetUploadForm() {
+    selectedFile = null;
+    fileInput.value = "";
+    fileInfo.style.display = "none";
+    progressContainer.style.display = "none";
+    progress.style.width = "0%";
+    progressText.textContent = "0%";
+    hideMessage();
+    resetButton.style.display = "none";
+    uploadWrapper.style.display = "block";
+    uploadButton.disabled = true;
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + " bytes";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+function showMessage(text, type) {
+    message.innerHTML = text;
+    message.className = "message " + type;
+    message.style.display = "block";
+}
+
+function hideMessage() {
+    message.style.display = "none";
+}
+</script>
+</body></html>

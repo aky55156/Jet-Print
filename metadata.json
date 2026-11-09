@@ -1,0 +1,8 @@
+{
+  "name": "JET PRINT - Cloud Printing Portal",
+  "description": "Official document printing and application forms portal for Jet Printer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
